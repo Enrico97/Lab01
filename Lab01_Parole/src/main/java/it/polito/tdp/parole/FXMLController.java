@@ -16,6 +16,7 @@ public class FXMLController {
 	Parole elenco ;
 	int i=0;
 	int x=0;
+	
 
     @FXML
     private ResourceBundle resources;
