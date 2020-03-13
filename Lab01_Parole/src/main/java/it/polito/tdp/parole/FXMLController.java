@@ -16,7 +16,6 @@ public class FXMLController {
 	Parole elenco ;
 	int i=0;
 	int x=0;
-	
 
     @FXML
     private ResourceBundle resources;
@@ -38,10 +37,15 @@ public class FXMLController {
     
     @FXML
     private Button btnCancella;
+    
+    @FXML
+    private TextArea txtTime;
 
     @FXML
     void doInsert(ActionEvent event) {
     	// TODO
+    	 long startTime = System.nanoTime();
+
     	String parola = txtParola.getText().trim();
     	if (parola.length()==0) {
     		if (i==0) {
@@ -49,11 +53,16 @@ public class FXMLController {
     		txtParola.clear();
     		i++;
     		x++;
-    		return;}
+    		long elapsedNanos = System.nanoTime() - startTime;
+        	txtTime.setText("inserisci impiega "+elapsedNanos+" nano secondi\n");
+    		return;
+    		}
     		txtResult.appendText("\ndevi inserire una parola");
     		txtParola.clear();
     		i++;
     		x++;
+    		long elapsedNanos = System.nanoTime() - startTime;
+        	txtTime.setText("inserisci impiega "+elapsedNanos+" nano secondi\n");
     		return;
     	} 
     	for (int k=0; k<parola.length(); k++) {
@@ -63,37 +72,55 @@ public class FXMLController {
     				txtParola.clear();
     				x++;
     				i++;
+    				long elapsedNanos = System.nanoTime() - startTime;
+    		    	txtTime.setText("inserisci impiega "+elapsedNanos+" nano secondi\n");
     				return;
     		}
     				txtResult.appendText("\nla parola deve contenere solo lettere");
     				txtParola.clear();
     				i++;
     	    		x++;
+    	    		long elapsedNanos = System.nanoTime() - startTime;
+    	        	txtTime.setText("inserisci impiega "+elapsedNanos+" nano secondi\n");
     				return;
     	}}
     	
-    	elenco.addParola(parola.trim());
+    	elenco.addParola(parola);
     	String ss="";
     	
     	for (String s : elenco.getElenco()) {
-    		ss+=s+"\n";
+    		ss+=s.trim();
     		i++;
-    		if (i==elenco.getElenco().toString().length()-1)
-    			ss+=s;
+    	if (i!=elenco.getElenco().toString().length()-1)
+    			ss+="\n"; 
     	}
+    	txtTime.clear();
     	txtResult.setText(ss.trim());
     	txtParola.clear();
+    	
+    	long elapsedNanos = System.nanoTime() - startTime;
+    	txtTime.setText("inserisci impiega "+elapsedNanos+" nano secondi\n");
     }
 
     @FXML
     void doReset(ActionEvent event) {
     	// TODO
+    	long startTime = System.nanoTime();
+    	
     	elenco.reset();
     	txtResult.clear();
+    	txtTime.clear();
+    	x=0;
+    	i=0;
+    	
+    	long elapsedNanos = System.nanoTime() - startTime;
+    	txtTime.setText("reset impiega "+elapsedNanos+" nano secondi\n");
     }
     
     @FXML
     void doCancella(ActionEvent event) {
+    	long startTime = System.nanoTime();
+    	
     	String cancella = txtResult.getSelectedText();
     	elenco.cancella(cancella);
     	
@@ -106,7 +133,11 @@ public class FXMLController {
 		if (i==elenco.getElenco().toString().length()-1)
 			ss+=s;
 	}
+	txtTime.clear();
 	txtResult.setText(ss.trim());
+	
+	long elapsedNanos = System.nanoTime() - startTime;
+	txtTime.setText("cancella impiega "+elapsedNanos+" nano secondi\n");
 }
 	
 
